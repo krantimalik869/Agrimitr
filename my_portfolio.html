@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kranti Malik | AI & ML Specialist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="my_portfolio.css">
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <a href="#" class="logo">KM.</a>
+        
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+            
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+
+            <button id="mobile-menu-btn" class="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero fade-in-hidden">
+        <div class="hero-bg-shape"></div>
+        <div class="hero-content">
+            <span class="hero-badge">Available for Work</span>
+            <h1>Hi, I'm <span class="highlight">Kranti</span> Malik.</h1>
+            <p>I'm a <strong>1st Year AI & ML Specialist</strong> based in Jind, Haryana. I build intelligent solutions blending software and hardware.</p>
+            <div class="cta-group">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#about" class="btn btn-secondary">About Me</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="fade-in-hidden">
+        <h2 class="section-title">About Me</h2>
+        <p class="section-subtitle">A glimpse into my background and what drives me.</p>
+        
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>💡 Deep Interest in Tech</h3>
+                <p>Hello! I am a 1st year AI & ML Specialist with a profound passion for <strong>Machine Learning</strong>. I love designing intelligent algorithms that solve real-world problems and creating efficient systems bridging the gap between theoretical AI and concrete hardware solutions.</p>
+                <div class="skills-tags">
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">Artificial Intelligence</span>
+                    <span class="tag">IoT</span>
+                    <span class="tag">Hardware Integration</span>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <h3>🏃‍♂️ Beyond the Screen</h3>
+                <p>When I'm not training models or working with IoT devices, you can find me heavily involved in physical activities. I hold a strong passion for sports and have a competitive background in:</p>
+                <div class="skills-tags">
+                    <span class="tag">Shotput</span>
+                    <span class="tag">Athletics</span>
+                    <span class="tag">Fitness</span>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <h3>🏅 Certifications</h3>
+                <p>Continuously validating my skills out-of-bounds with industry-recognized tech badges:</p>
+                <div class="skills-tags" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="cert-badge">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <div>
+                            <strong>Python Certificate</strong>
+                            <span>GeeksforGeeks</span>
+                        </div>
+                    </div>
+                    <div class="cert-badge">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <div>
+                            <strong>Intro to AI</strong>
+                            <span>Infosys</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="fade-in-hidden">
+        <h2 class="section-title">Education Journey</h2>
+        <p class="section-subtitle">My academic track record across the years.</p>
+
+        <div class="timeline">
+            <div class="timeline-item fade-in-hidden">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>B.Tech - 1st Year (AI & ML)</h3>
+                    <p>Currently specializing in Artificial Intelligence and Machine Learning algorithms.</p>
+                    <div class="score-badge">9.0 CGPA</div>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in-hidden">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>12th Class (Senior Secondary)</h3>
+                    <p>Foundations in high school leading into technology fields.</p>
+                    <div class="score-badge">80%</div>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-in-hidden">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h3>10th Class (Secondary)</h3>
+                    <p>Early academic excellence.</p>
+                    <div class="score-badge">85%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="fade-in-hidden">
+        <h2 class="section-title">Key Projects</h2>
+        <p class="section-subtitle">Real-world applications of AI and IoT to solve critical agricultural challenges.</p>
+
+        <div class="projects-grid">
+            
+            <div class="project-card fade-in-hidden">
+                <img src="cotton_ai_pest.png" alt="AI representation of cotton plant" class="project-image">
+                <div class="project-content">
+                    <span class="project-type">IoT & Software Analysis</span>
+                    <h3>Pest Detection in Cotton Plants</h3>
+                    <p>A sophisticated machine learning solution acting as an early pest detection system designed specifically for the protection of cotton plants. Leveraging IoT data alongside predictive AI models to alert farmers proactively.</p>
+                </div>
+            </div>
+
+            <div class="project-card fade-in-hidden">
+                <div class="hardware-svg-wrap" style="width: 100%; height: 240px; background: linear-gradient(135deg, var(--color-green-100) 0%, var(--color-green-300) 100%); display:flex; align-items:center; justify-content:center;">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--color-green-700)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="hardware-svg"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                </div>
+                <div class="project-content">
+                    <span class="project-type">Hardware Engineering</span>
+                    <h3>Pest Detection Hardware Prototype</h3>
+                    <p>The companion hardware project applying the IoT concept into a tangible prototype. Integrates sensors and microcontrollers deployed directly into the field for live, at-the-source environmental and physical analysis.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h2>Kranti Malik</h2>
+        <p>1st Year AI & ML Specialist from Jind, Haryana.</p>
+        <p style="margin-top: 2rem; font-size: 0.875rem;">&copy; 2026 Kranti Malik. All rights reserved.</p>
+    </footer>
+
+    <script src="my_portfolio.js"></script>
+</body>
+</html>

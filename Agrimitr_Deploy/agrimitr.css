@@ -1,0 +1,311 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+    background-color: #064e3b; /* Fills screen fallback */
+    display: flex;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+}
+
+#app-container {
+    width: 100%;
+    /* Removed the max-width: 420px to let it span the laptop screen freely */
+    height: 100vh;
+    background: linear-gradient(145deg, #10b981 0%, #064e3b 100%);
+    position: relative;
+    overflow: hidden;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Background Aesthetics */
+.bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+}
+/* Responsive background shapes */
+.bg-shape-1 { width: 40vw; height: 40vw; max-width: 500px; max-height: 500px; top: -10vw; left: -5vw; }
+.bg-shape-2 { width: 50vw; height: 50vw; max-width: 800px; max-height: 800px; bottom: -15vw; right: -15vw; background: rgba(255, 255, 255, 0.03); }
+.bg-shape-3 { width: 25vw; height: 25vw; max-width: 350px; max-height: 350px; top: 40%; left: 60%; background: rgba(16, 185, 129, 0.2); }
+
+/* Navigation Top */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    z-index: 10;
+    position: relative;
+}
+
+.app-logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: background 0.2s;
+}
+
+.lang-btn:hover { background: rgba(255,255,255,0.3); }
+
+/* Screen Switcher */
+.screen {
+    position: absolute;
+    top: 80px; /* Below nav */
+    left: 0; right: 0; bottom: 0;
+    padding: 1.5rem 5%;
+    z-index: 5;
+    display: none;
+    flex-direction: column;
+}
+
+.active-screen {
+    display: flex;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.scrollable {
+    overflow-y: auto;
+    padding-bottom: 3rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Formatted Containers for Desktop Centering */
+.login-content, .screen-title, .action-grid, .alerts-section, .doctor-inbox, .btn-text-logout {
+    max-width: 800px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Login specific */
+.login-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: -80px;
+}
+
+.illustration-circle {
+    width: 120px; height: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.leaf-icon { color: #6ee7b7; }
+
+/* Buttons */
+.btn {
+    width: 100%;
+    max-width: 400px; /* Stops buttons from being massive on laptop */
+    padding: 1.2rem;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn:active { transform: scale(0.98); }
+
+.btn-primary {
+    background: #ffffff;
+    color: #047857;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Dashboard Titles */
+.screen-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+/* Farmer Dashboard Grid */
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.action-card:hover { transform: translateY(-3px); }
+.action-card:active { background: rgba(255,255,255,0.2); transform: translateY(0); }
+
+.full-width { grid-column: span 2; }
+
+.icon-wrap {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 1rem;
+}
+.icon-wrap svg { width: 24px; height: 24px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.bg-green { background: #34d399; }
+.bg-orange { background: #fb923c; }
+.bg-blue { background: #60a5fa; }
+
+/* Alerts Inbox */
+.alerts-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 24px;
+    padding: 1.5rem;
+}
+
+.alert-item {
+    background: white;
+    color: #1f2937;
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.alert-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.red-dot { width: 10px; height: 10px; background: #ef4444; border-radius: 50%; }
+
+.alert-text { font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.5rem; color: #4b5563; }
+
+.btn-play {
+    width: 100%;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-play:hover { background: #059669; }
+
+/* Doctor Dash */
+.case-card {
+    background: white;
+    color: #1f2937;
+    padding: 1.5rem;
+    border-radius: 16px;
+}
+.case-header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-weight: 600;}
+.badge { background: #fee2e2; color: #ef4444; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; }
+.case-body { display: flex; gap: 1rem; align-items: center; }
+.mock-photo { width: 60px; height: 60px; background: #e5e7eb url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>') no-repeat center; border-radius: 10px; border: 1px solid #d1d5db; }
+
+.btn-text-logout {
+    background: none; border:none; color: rgba(255,255,255,0.7);
+    width: 100%; text-align: center; margin-top: 2rem; padding: 1rem;
+    font-size: 1rem; text-decoration: underline; cursor: pointer;
+}
+
+/* Toast */
+.toast {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 500px;
+    background: #1f2937;
+    color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+}
+.toast.show { bottom: 30px; }
+
+/* LAPTOP / TABLET RESPONSIVENESS */
+@media (min-width: 768px) {
+    .action-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    .full-width {
+        grid-column: span 1; /* Reset full width so it sits perfectly in 3 columns */
+    }
+    .screen-title {
+        font-size: 2.2rem;
+    }
+    .login-content h1 {
+        font-size: 2.5rem;
+    }
+    .action-card {
+        padding: 2.5rem 1.5rem;
+    }
+    .action-card .icon-wrap {
+        width: 80px; height: 80px;
+    }
+    .action-card .icon-wrap svg {
+        width: 32px; height: 32px;
+    }
+    .action-card span {
+        font-size: 1.15rem;
+    }
+    .alerts-section {
+        padding: 2.5rem;
+    }
+    .alert-text {
+        font-size: 1.1rem;
+    }
+    .btn-play {
+        font-size: 1.1rem;
+        padding: 1.2rem;
+    }
+}

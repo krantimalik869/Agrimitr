@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shopping List App - Vibrant Style</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            /* Vibrant Option 2 Color Palette */
+            --bg-color: #F8F9FD;
+            --surface-color: #FFFFFF;
+            --text-main: #2D3142;
+            --text-light: #9094A6;
+            --primary-accent: #FF8BA7;
+            --primary-accent-hover: #FF7898;
+
+            --cat-groceries-bg: #E8F5E9;
+            --cat-groceries-icon: #4CAF50;
+            --cat-home-bg: #FFF3E0;
+            --cat-home-icon: #FF9800;
+            --cat-office-bg: #E3F2FD;
+            --cat-office-icon: #2196F3;
+            --cat-school-bg: #F3E5F5;
+            --cat-school-icon: #9C27B0;
+
+            --radius-sm: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 50px;
+            --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.04);
+            --shadow-floating: 0 14px 28px rgba(255, 139, 167, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #E2E8F0;
+            display: flex;
+            justify-content: center;
+            alignItems: center;
+            min-height: 100vh;
+        }
+
+        #root {
+            width: 100%;
+            height: 100vh;
+            max-width: 420px;
+            max-height: 850px;
+            background-color: var(--bg-color);
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 480px) {
+            #root {
+                height: 90vh;
+                border-radius: 40px;
+                border: 8px solid #FFFFFF;
+                overflow: hidden;
+                margin: auto;
+                +
+            }
+        }
+
+        .header {
+            padding: 30px 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: #FFE0E6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-accent);
+            font-weight: 600;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 24px 100px 24px;
+        }
+
+        .content-area::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-area {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .list-card {
+            background: var(--surface-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .list-card:active {
+            transform: scale(0.98);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 16px;
+        }
+
+        .icon-box i {
+            width: 24px;
+            height: 24px;
+        }
+
+        .list-details {
+            flex: 1;
+        }
+
+        .list-title {
+            color: var(--text-main);
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .list-count {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #F0F2F9;
+            border-top-color: var(--primary-accent);
+            border-right-color: var(--primary-accent);
+            transform: rotate(-45deg);
+        }
+
+        .fab {
+            position: absolute;
+            bottom: 30px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: var(--shadow-floating);
+            cursor: pointer;
+            z-index: 100;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        .fab i {
+            width: 28px;
+            height: 28px;
+            stroke-width: 2.5;
+        }
+
+        .screen-header {
+            display: flex;
+            align-items: center;
+            padding: 30px 24px 20px;
+        }
+
+        .back-btn {
+            background: #FFFFFF;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-right: 16px;
+            color: var(--text-main);
+        }
+
+        .screen-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .modern-input {
+            width: 100%;
+            background: #FFFFFF;
+            border: none;
+            padding: 18px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            color: var(--text-main);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            outline: none;
+            font-family: 'Outfit';
+        }
+
+        .modern-input::placeholder {
+            color: #BEC3D5;
+        }
+
+        .pill-btn {
+            width: 100%;
+            background-color: var(--primary-accent);
+            color: white;
+            padding: 18px;
+            border-radius: var(--radius-pill);
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-floating);
+            font-family: 'Outfit';
+            transition: opacity 0.2s;
+        }
+
+        .pill-btn:active {
+            opacity: 0.8;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .grid-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .grid-icon {
+            width: 60px;
+            height: 60px;
+            background: #FFFFFF;
+            border-radius: var(--radius-sm);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            margin-bottom: 8px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .grid-icon.selected {
+            border-color: var(--primary-accent);
+            background: #FFF5F7;
+        }
+
+        .grid-item span {
+            font-size: 12px;
+            color: var(--text-main);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .profile-card {
+            background: #FFFFFF;
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        .profile-card i {
+            margin-right: 16px;
+            color: var(--text-light);
+        }
+
+        .profile-card span {
+            flex: 1;
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .profile-card .chevron {
+            color: #E0E4F0;
+        }
+
+        .bg-groceries {
+            background-color: var(--cat-groceries-bg);
+            color: var(--cat-groceries-icon);
+        }
+
+        .bg-home {
+            background-color: var(--cat-home-bg);
+            color: var(--cat-home-icon);
+        }
+
+        .bg-office {
+            background-color: var(--cat-office-bg);
+            color: var(--cat-office-icon);
+        }
+
+        .bg-school {
+            background-color: var(--cat-school-bg);
+            color: var(--cat-school-icon);
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            background: #FFFFFF;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .list-item.completed {
+            opacity: 0.6;
+            background: #F8F9FD;
+        }
+
+        .list-item.completed .item-name {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid #E0E4F0;
+            margin-right: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .list-item.completed .checkbox-custom {
+            background-color: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+
+        .checkbox-custom svg {
+            color: white;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s;
+        }
+
+        .list-item.completed .checkbox-custom svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .item-name {
+            flex: 1;
+            font-size: 16px;
+            color: var(--text-main);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .item-category-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const IconHome = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
+        const IconOffice = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>;
+        const IconBook = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>;
+        const IconApple = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"></path><path d="M10 2c1 .5 2 2 2 5"></path></svg>;
+        const IconPlus = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
+        const IconChevronLeft = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>;
+        const IconChevronRight = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>;
+        const IconSettings = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>;
+        const IconBell = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>;
+        const IconUsers = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
+        const IconCheck = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>;
+        const IconTrash = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+        const IconUserPlus = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>;
+
+        const App = () => {
+            const [currentScreen, setCurrentScreen] = useState('dashboard');
+            const [activeListId, setActiveListId] = useState(null);
+
+            const availableUsers = [
+                { id: 1, name: 'Kranti', avatar: 'K' },
+                { id: 2, name: 'Mamma', avatar: 'M' },
+                { id: 3, name: 'Papa', avatar: 'P' },
+                { id: 4, name: 'Dadi', avatar: 'D' },
+                { id: 5, name: 'Dada', avatar: 'D' }
+            ];
+            const [currentUser, setCurrentUser] = useState(availableUsers[0]);
+
+            const [lists, setLists] = useState([
+                {
+                    id: 1, title: 'Groceries', count: '4 Items', colorClass: 'bg-groceries', icon: <IconApple />,
+                    items: [
+                        { id: 101, name: 'Milk', completed: false, icon: '🥛' },
+                        { id: 102, name: 'Bread', completed: true, icon: '🍞' },
+                        { id: 103, name: 'Eggs', completed: false, icon: '🥚' },
+                        { id: 104, name: 'Cheese', completed: false, icon: '🧀' }
+                    ]
+                },
+                { id: 2, title: 'Home Essentials', count: '0 Items', colorClass: 'bg-home', icon: <IconHome />, items: [] },
+                { id: 3, title: 'Office Supplies', count: '0 Items', colorClass: 'bg-office', icon: <IconOffice />, items: [] },
+                { id: 4, title: 'Back to School', count: '0 Items', colorClass: 'bg-school', icon: <IconBook />, items: [] }
+            ]);
+
+            const handleNavigate = (screen, listId = null) => {
+                if (listId && screen === 'listDetails') {
+                    setActiveListId(listId);
+                }
+                setCurrentScreen(screen);
+            };
+
+            const handleAddList = (newList) => {
+                setLists([...lists, { ...newList, id: Date.now(), items: [] }]);
+                setCurrentScreen('dashboard');
+            };
+
+            const handleToggleItem = (listId, itemId) => {
+                setLists(lists.map(list => {
+                    if (list.id === listId) {
+                        return { ...list, items: list.items.map(i => i.id === itemId ? { ...i, completed: !i.completed } : i) };
+                    }
+                    return list;
+                }));
+            };
+
+            const handleAddItem = (listId, name, icon) => {
+                if (!name || !name.trim()) return;
+                setLists(lists.map(list => {
+                    if (list.id === listId) {
+                        const newItems = [...list.items, { id: Date.now(), name: name.trim(), completed: false, icon: icon || '🔹' }];
+                        return { ...list, items: newItems, count: `${newItems.length} Items` };
+                    }
+                    return list;
+                }));
+                setCurrentScreen('listDetails');
+            };
+
+            const activeListObj = lists.find(l => l.id === activeListId);
+
+            const renderScreen = () => {
+                switch (currentScreen) {
+                    case 'add': return <AddItemsScreen onBack={() => handleNavigate(activeListObj ? 'listDetails' : 'dashboard')} onAddItem={handleAddItem} activeList={activeListObj} />;
+                    case 'create': return <CreateListScreen onBack={() => handleNavigate('dashboard')} onSave={handleAddList} />;
+                    case 'profile': return <UserProfileScreen onBack={() => handleNavigate('dashboard')} onNavigate={handleNavigate} currentUser={currentUser} setCurrentUser={setCurrentUser} availableUsers={availableUsers} />;
+                    case 'family': return <FamilyMembersScreen onBack={() => handleNavigate('profile')} currentUser={currentUser} />;
+                    case 'listDetails': return <ListDetailsScreen list={activeListObj} onBack={() => handleNavigate('dashboard')} onAddItem={() => handleNavigate('add', activeListObj.id)} onToggleItem={handleToggleItem} />;
+                    default: return <DashboardScreen onNavigate={handleNavigate} lists={lists} currentUser={currentUser} />;
+                }
+            };
+
+            return (
+                <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    {renderScreen()}
+                </div>
+            );
+        };
+
+        const DashboardScreen = ({ onNavigate, lists, currentUser }) => {
+            return (
+                <>
+                    <div className="header">
+                        <div>
+                            <div className="header-subtitle">Good Morning,</div>
+                            <h1>{currentUser.name}! 👋</h1>
+                        </div>
+                        <div className="user-avatar" onClick={() => onNavigate('profile')}>{currentUser.avatar}</div>
+                    </div>
+                    <div className="content-area">
+                        {lists.map(list => (
+                            <div key={list.id} className="list-card" onClick={() => onNavigate('listDetails', list.id)}>
+                                <div className={`icon-box ${list.colorClass}`}>
+                                    {list.icon}
+                                </div>
+                                <div className="list-details">
+                                    <div className="list-title">{list.title}</div>
+                                    <div className="list-count">{list.count}</div>
+                                </div>
+                                <div className="progress-circle"></div>
+                            </div>
+                        ))}
+                    </div>
+                    <button className="fab" onClick={() => onNavigate('create')}>
+                        <IconPlus />
+                    </button>
+                </>
+            );
+        };
+
+        const ListDetailsScreen = ({ list, onBack, onAddItem, onToggleItem }) => {
+            if (!list) return null;
+
+            const items = list.items || [];
+            const completedCount = items.filter(i => i.completed).length;
+            const progress = items.length === 0 ? 0 : (completedCount / items.length) * 100;
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#F8F9FD', position: 'relative' }}>
+                    <div style={{ backgroundColor: '#FFFFFF', padding: '30px 24px 30px', borderBottomLeftRadius: '30px', borderBottomRightRadius: '30px', marginBottom: '10px', boxShadow: '0 4px 15px rgba(0,0,0,0.03)', display: 'flex', alignItems: 'center' }}>
+                        <button className="back-btn" style={{ marginRight: '16px', backgroundColor: '#F8F9FD' }} onClick={onBack}><IconChevronLeft /></button>
+                        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                            <div className={`icon-box ${list.colorClass}`} style={{ marginRight: '16px', width: '45px', height: '45px', marginBottom: '0' }}>
+                                {list.icon}
+                            </div>
+                            <div>
+                                <h2 className="screen-title" style={{ fontSize: '20px', marginBottom: '2px' }}>{list.title}</h2>
+                                <div style={{ fontSize: '13px', color: 'var(--text-light)' }}>{items.length} Items • {completedCount} Completed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="content-area" style={{ paddingTop: '10px', flex: 1 }}>
+                        <div style={{ marginBottom: '20px', padding: '0 4px' }}>
+                            <div style={{ height: '6px', backgroundColor: '#E0E4F0', borderRadius: '3px', overflow: 'hidden' }}>
+                                <div style={{ height: '100%', width: `${progress}%`, backgroundColor: 'var(--primary-accent)', borderRadius: '3px', transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }}></div>
+                            </div>
+                        </div>
+
+                        {items.length === 0 ? (
+                            <div style={{ textAlign: 'center', marginTop: '40px', color: 'var(--text-light)' }}>
+                                <p>No items yet. Tap '+' to add!</p>
+                            </div>
+                        ) : (
+                            items.map(item => (
+                                <div key={item.id} className={`list-item ${item.completed ? 'completed' : ''}`} onClick={() => onToggleItem(list.id, item.id)}>
+                                    <div className="checkbox-custom">
+                                        <IconCheck />
+                                    </div>
+                                    <div className={`item-category-icon ${list.colorClass}`} style={{ marginRight: '16px' }}>
+                                        {item.icon}
+                                    </div>
+                                    <div className="item-name">{item.name}</div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                    <button className="fab" onClick={onAddItem}>
+                        <IconPlus />
+                    </button>
+                </div>
+            );
+        };
+
+        const AddItemsScreen = ({ onBack, onAddItem, activeList }) => {
+            const [customItem, setCustomItem] = useState('');
+
+            const commonItems = [
+                { name: 'Milk', icon: '🥛', id: 1 },
+                { name: 'Bread', icon: '🍞', id: 2 },
+                { name: 'Eggs', icon: '🥚', id: 3 },
+                { name: 'Apples', icon: '🍎', id: 4 },
+                { name: 'Coffee', icon: '☕', id: 5 },
+                { name: 'Soap', icon: '🧼', id: 6 },
+                { name: 'Water', icon: '💧', id: 7 },
+                { name: 'Cheese', icon: '🧀', id: 8 },
+            ];
+
+            const handleCustomAdd = () => {
+                if (customItem.trim() && activeList) {
+                    onAddItem(activeList.id, customItem.trim(), '🔹');
+                    setCustomItem('');
+                }
+            };
+
+            const handleQuickAdd = (item) => {
+                if (activeList) {
+                    onAddItem(activeList.id, item.name, item.icon);
+                }
+            };
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <div className="screen-header">
+                        <button className="back-btn" onClick={onBack}><IconChevronLeft /></button>
+                        <h2 className="screen-title" style={{ fontSize: '20px' }}>Add to {activeList ? activeList.title : 'List'}</h2>
+                    </div>
+                    <div className="content-area">
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                className="modern-input"
+                                placeholder="Type custom item name..."
+                                value={customItem}
+                                onChange={(e) => setCustomItem(e.target.value)}
+                                autoFocus
+                            />
+                        </div>
+                        <button className="pill-btn" onClick={handleCustomAdd} style={{ marginBottom: '30px' }}>Add Custom Item</button>
+
+                        <label style={{ display: 'block', color: 'var(--text-light)', fontSize: '14px', marginBottom: '16px', fontWeight: '500' }}>Or Quick Add Options</label>
+                        <div className="icon-grid">
+                            {commonItems.map(item => (
+                                <div key={item.id} className="grid-item" onClick={() => handleQuickAdd(item)}>
+                                    <div className="grid-icon" style={{ fontSize: '28px' }}>{item.icon}</div>
+                                    <span>{item.name}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const CreateListScreen = ({ onBack, onSave }) => {
+            const [listName, setListName] = useState('');
+            const [selectedColor, setSelectedColor] = useState('bg-groceries');
+            const colors = ['bg-groceries', 'bg-home', 'bg-office', 'bg-school'];
+
+            const handleSave = () => {
+                if (listName.trim()) {
+                    let icon = <IconApple />;
+                    if (selectedColor === 'bg-home') icon = <IconHome />;
+                    if (selectedColor === 'bg-office') icon = <IconOffice />;
+                    if (selectedColor === 'bg-school') icon = <IconBook />;
+                    onSave({ title: listName.trim(), count: '0 Items', colorClass: selectedColor, icon });
+                }
+            };
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <div className="screen-header">
+                        <button className="back-btn" onClick={onBack}><IconChevronLeft /></button>
+                        <h2 className="screen-title">Create List</h2>
+                    </div>
+                    <div className="content-area">
+                        <div className="input-group">
+                            <label>List Name</label>
+                            <input type="text" className="modern-input" placeholder="e.g. Weekend Party Planner" value={listName} onChange={e => setListName(e.target.value)} autoFocus />
+                        </div>
+
+                        <label style={{ display: 'block', color: 'var(--text-light)', fontSize: '14px', marginBottom: '16px', fontWeight: '500' }}>Select Theme</label>
+                        <div className="icon-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
+                            {colors.map(colorClass => (
+                                <div key={colorClass} className="grid-item" onClick={() => setSelectedColor(colorClass)}>
+                                    <div className={`grid-icon ${colorClass} ${selectedColor === colorClass ? 'selected' : ''}`} style={{ borderRadius: '50%', width: '50px', height: '50px' }}></div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div style={{ marginTop: '40px' }}>
+                            <button className="pill-btn" onClick={handleSave}>Save New List</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FamilyMembersScreen = ({ onBack, currentUser }) => {
+            const [members, setMembers] = useState([
+                { id: 1, name: currentUser.name, role: 'Owner', avatar: currentUser.avatar, color: '#FFE0E6', textColor: 'var(--primary-accent)' },
+                { id: 2, name: 'Kranti', role: 'Member', avatar: 'K', color: '#E8F5E9', textColor: '#4CAF50' },
+                { id: 3, name: 'Mamma', role: 'Member', avatar: 'M', color: '#E3F2FD', textColor: '#2196F3' }
+            ]);
+            const [newMemberName, setNewMemberName] = useState('');
+
+            const handleAddMember = () => {
+                if (newMemberName.trim()) {
+                    const newMember = {
+                        id: Date.now(),
+                        name: newMemberName.trim(),
+                        role: 'Member',
+                        avatar: newMemberName.trim().charAt(0).toUpperCase(),
+                        color: '#F3E5F5',
+                        textColor: '#9C27B0'
+                    };
+                    setMembers([...members, newMember]);
+                    setNewMemberName('');
+                }
+            };
+
+            const handleRemoveMember = (id) => {
+                setMembers(members.filter(m => m.id !== id));
+            };
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <div className="screen-header">
+                        <button className="back-btn" onClick={onBack}><IconChevronLeft /></button>
+                        <h2 className="screen-title">Family Sharing</h2>
+                    </div>
+                    <div className="content-area" style={{ paddingTop: '10px' }}>
+                        <div className="input-group" style={{ display: 'flex', gap: '10px', marginBottom: '30px' }}>
+                            <input
+                                type="text"
+                                className="modern-input"
+                                placeholder="Email or Name to add..."
+                                value={newMemberName}
+                                onChange={(e) => setNewMemberName(e.target.value)}
+                                style={{ flex: 1, padding: '14px 20px' }}
+                            />
+                            <button
+                                onClick={handleAddMember}
+                                style={{
+                                    backgroundColor: 'var(--primary-accent)',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: 'var(--radius-sm)',
+                                    padding: '0 20px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    boxShadow: 'var(--shadow-floating)'
+                                }}
+                            >
+                                <IconUserPlus />
+                            </button>
+                        </div>
+
+                        <label style={{ display: 'block', color: 'var(--text-light)', fontSize: '14px', marginBottom: '16px', fontWeight: '500' }}>Current Shared Members</label>
+
+                        {members.map(member => (
+                            <div key={member.id} className="profile-card" style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: member.color, color: member.textColor, display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '18px', fontWeight: '600', marginRight: '16px' }}>
+                                    {member.avatar}
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: '16px', color: 'var(--text-main)', fontWeight: '500', marginBottom: '2px' }}>{member.name}</div>
+                                    <div style={{ fontSize: '13px', color: 'var(--text-light)' }}>{member.role}</div>
+                                </div>
+                                {member.role !== 'Owner' && member.name !== currentUser.name && (
+                                    <button
+                                        onClick={() => handleRemoveMember(member.id)}
+                                        style={{ background: 'none', border: 'none', color: '#ff4d4f', cursor: 'pointer', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                    >
+                                        <IconTrash />
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const UserProfileScreen = ({ onBack, onNavigate, currentUser, setCurrentUser, availableUsers }) => {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <div className="screen-header">
+                        <button className="back-btn" onClick={onBack}><IconChevronLeft /></button>
+                        <h2 className="screen-title">Profile Settings</h2>
+                    </div>
+                    <div className="content-area" style={{ paddingTop: '10px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '30px' }}>
+                            <div style={{ width: '90px', height: '90px', borderRadius: '50%', backgroundColor: '#FFE0E6', color: 'var(--primary-accent)', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '36px', fontWeight: '700', marginBottom: '16px', boxShadow: '0 8px 20px rgba(0,0,0,0.05)' }}>
+                                {currentUser.avatar}
+                            </div>
+                            <h2 style={{ fontSize: '22px', color: 'var(--text-main)', marginBottom: '4px' }}>{currentUser.name}</h2>
+                            <p style={{ color: 'var(--text-light)', fontSize: '13px', marginBottom: '4px' }}>Google Account Logged In</p>
+                            <p style={{ color: 'var(--primary-accent)', fontSize: '15px' }}>{currentUser.name.toLowerCase()}@gmail.com</p>
+                        </div>
+
+                        <label style={{ display: 'block', color: 'var(--text-light)', fontSize: '14px', marginBottom: '12px', fontWeight: '500', marginLeft: '4px' }}>Switch User Account</label>
+                        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '20px', marginBottom: '10px' }}>
+                            {availableUsers.map(u => (
+                                <div key={u.id}
+                                    onClick={() => setCurrentUser(u)}
+                                    style={{
+                                        padding: '10px 16px',
+                                        borderRadius: '50px',
+                                        cursor: 'pointer',
+                                        fontWeight: '600',
+                                        fontSize: '14px',
+                                        backgroundColor: currentUser.id === u.id ? 'var(--primary-accent)' : '#FFFFFF',
+                                        color: currentUser.id === u.id ? '#FFFFFF' : 'var(--text-light)',
+                                        boxShadow: currentUser.id === u.id ? 'var(--shadow-floating)' : '0 2px 10px rgba(0,0,0,0.03)',
+                                        border: currentUser.id === u.id ? 'none' : '1px solid #E0E4F0',
+                                        whiteSpace: 'nowrap'
+                                    }}>
+                                    {u.name}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="profile-card" style={{ cursor: 'pointer' }}>
+                            <IconSettings />
+                            <span>Account Details</span>
+                            <IconChevronRight className="chevron" />
+                        </div>
+                        <div className="profile-card" style={{ cursor: 'pointer' }} onClick={() => onNavigate && onNavigate('family')}>
+                            <IconUsers />
+                            <span>Family Sharing Options</span>
+                            <IconChevronRight className="chevron" />
+                        </div>
+
+                        <div style={{ backgroundColor: '#FFF5F7', borderRadius: 'var(--radius-lg)', padding: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '30px' }}>
+                            <div>
+                                <h3 style={{ color: 'var(--primary-accent)', fontSize: '16px', marginBottom: '4px' }}>Upgrade to Pro</h3>
+                                <p style={{ color: '#FFB3C6', fontSize: '13px' }}>Get unlimited shared lists.</p>
+                            </div>
+                            <button style={{ backgroundColor: 'var(--primary-accent)', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '20px', fontWeight: '600' }}>View</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
